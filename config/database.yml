@@ -22,6 +22,9 @@ default: &default
 
 development:
   <<: *default
+  host: db
+  username: postgres
+  password: password
   database: task_manager_development
 
   # The specified database role being used to connect to PostgreSQL.
