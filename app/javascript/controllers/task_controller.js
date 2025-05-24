@@ -207,14 +207,14 @@ export default class extends Controller {
   focusIn() {
     if (!this._hasActiveFocus()) return;
 
-    this.element.classList.add("bg-neutral-800");
+    this.element.classList.add("bg-slate-800");
   }
 
   focusOut() {
     if (this._hasActiveFocus()) return;
 
     requestAnimationFrame(() => {
-      this.element.classList.remove("bg-neutral-800");
+      this.element.classList.remove("bg-slate-800");
 
       if (this._shouldRemove()) {
         this.element.remove();
