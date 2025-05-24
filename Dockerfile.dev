@@ -15,6 +15,11 @@ RUN bundle install
 # Copy the rest of the code
 COPY . .
 
+COPY ./bin/docker-entrypoint /usr/bin/docker-entrypoint
+RUN chmod +x /usr/bin/docker-entrypoint
+
+ENTRYPOINT ["/usr/bin/docker-entrypoint"]
+
 # Expose the port Rails runs on
 EXPOSE 3000
 
