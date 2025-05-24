@@ -14,6 +14,8 @@
   --color-info: var(--color-sky-400);
 }
 
-* {
-  color: var(--color-neutral);
+@layer base {
+  html {
+    color: var(--color-neutral);
+  }
 }

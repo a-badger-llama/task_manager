@@ -4,6 +4,7 @@ import debounce     from "debounce";
 
 const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 
+// TODO: clean up - change states based on focus and active
 export default class extends Controller {
   static values = {id: Number};
   static targets = ["attribute", "complete", "domId", "display", "form", "title", "dragHandle", "description"];
