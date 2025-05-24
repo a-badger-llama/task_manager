@@ -11,6 +11,15 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "application#dashboard"
+  authenticated :user do
+    root to: "tasks#index", as: :user_root
+  end
+
   root to: redirect('/users/sign_up')
+
+  resources :tasks do
+    collection do
+      post "reorder"
+    end
+  end
 end

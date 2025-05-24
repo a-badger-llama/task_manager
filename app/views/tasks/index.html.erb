@@ -1,0 +1,33 @@
+<div class="container mx-auto my-8 max-w-2xl py-2 bg-red-200 rounded-2xl border border-gray-900 text-sm">
+  <div class="flex flex-col justify-center px-4">
+    <div class="flex items-center justify-between">
+      <h1 class="h3">Task List</h1>
+    </div>
+
+    <%= tag.div class: "flex", data: { controller: "task" } do %>
+      <span class="cursor-pointer w-full px-2 py-1 rounded-2xl hover:bg-red-400 text-primary" data-action="click->task#prependTask">New Task</span>
+    <% end %>
+
+    <template id="task-template"><%= render Task.new %></template>
+  </div>
+
+  <div id="tasks" class="flex flex-col" data-controller="task-list">
+    <% @tasks.each do |task| %>
+      <%= render task %>
+    <% end %>
+  </div>
+
+  <div class="flex flex-col" data-controller="toggle">
+    <div class="flex items-center p-1 gap-1 cursor-pointer" data-toggle-target="button" data-action="click->toggle#toggle">
+      <span class="m-2 text-xs" data-toggle-target="toggleClass" data-toggle-class="hidden">&#9654;</span> <!-- Right-facing caret -->
+      <span class="m-2 text-xs hidden" data-toggle-target="toggleClass" data-toggle-class="hidden">&#9660;</span> <!-- Downward-facing caret -->
+      Completed (<span id="completed-count"><%= @completed_tasks.size %></span>)
+    </div>
+
+    <div id="completed-tasks" class="hidden" data-toggle-target="toggleable">
+      <% @completed_tasks.each do |task| %>
+        <%= render task %>
+      <% end %>
+    </div>
+  </div>
+</div>
