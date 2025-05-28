@@ -46,8 +46,8 @@ class Task < ApplicationRecord
   end
 
   def due_at=(value)
-    @due_date = value
-    @due_time = value
+    self.due_date = value
+    self.due_time = value
 
     super
   end
