@@ -1,0 +1,19 @@
+<div data-controller="view-components--time-picker-component" data-action="click@window->view-components--time-picker-component#hide touchstart@window->view-components--time-picker-component#hide keydown.up->view-components--time-picker-component#previousItem keydown.down->view-components--time-picker-component#nextItem keydown.esc->view-components--time-picker-component#hide">
+  <!-- Text input field -->
+  <%= form.text_field field,
+                      class: "w-full bg-transparent border border-neutral-700 text-sm p-2 rounded-lg",
+                      placeholder: placeholder,
+                      data: {
+                        "view_components--time-picker-component_target": "input",
+                        action: "click->view-components--time-picker-component#show blur->view-components--time-picker-component#hide"
+                      } %>
+
+  <!-- Dropdown with predefined times (initially hidden) -->
+  <div class="hidden" data-view-components--time-picker-component-target="menu">
+    <% helpers.time_select_options(interval: 30).each do |display, value| %>
+      <div class="p-2 cursor-pointer" data-value="<%= value %>" data-action="click->view-components--time-picker-component#select">
+        <%= display %>
+      </div>
+    <% end %>
+  </div>
+</div>
