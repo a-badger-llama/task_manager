@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../builds/flatpickr.min";
 
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
@@ -17,5 +18,32 @@
 @layer base {
   html {
     color: var(--color-neutral);
+
+    @apply stroke-neutral;
+  }
+}
+
+.flatpickr {
+  @apply bg-transparent text-inherit shadow-none;
+
+  .flatpickr-calendar {
+    @apply bg-transparent text-inherit shadow-none;
+
+    * {
+      @apply bg-transparent text-inherit fill-current;
+    }
+
+    .prevMonthDay,
+    .nextMonthDay {
+      @apply bg-transparent text-accent;
+    }
+
+    .flatpickr-day.selected {
+      @apply border-secondary;
+
+      &:hover {
+        @apply bg-secondary;
+      }
+    }
   }
 }

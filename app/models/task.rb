@@ -57,8 +57,7 @@ class Task < ApplicationRecord
   def combine_due_date_and_time
     return if due_date.blank?
 
-    time_part = due_time.presence || "00:00"
-
-    self.due_at = Time.zone.parse("#{due_date} #{time_part}")
+    self.has_due_time = due_time.present?
+    self.due_at = Time.zone.parse("#{due_date} #{due_time.presence}")
   end
 end
