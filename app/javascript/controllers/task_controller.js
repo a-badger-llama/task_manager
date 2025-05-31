@@ -14,7 +14,6 @@ export default class extends Controller {
     this.initializeDebouncedMethods();
     this.pendingStream = null;
     this.element.addEventListener("keydown", this.handleKeydown.bind(this));
-    this.element.addEventListener("onChange", this.focusIn.bind(this));
   }
 
   initializeDebouncedMethods() {
@@ -24,7 +23,6 @@ export default class extends Controller {
   }
 
   autoSave() {
-    console.log("auto save")
     this.submitForm();
   }
 
