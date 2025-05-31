@@ -38,7 +38,7 @@ class Task < ApplicationRecord
   end
 
   def due_time
-    @due_time || due_at&.strftime("%H:%M")
+    @due_time || due_at&.strftime("%l:%M %p")
   end
 
   def due_time=(value)

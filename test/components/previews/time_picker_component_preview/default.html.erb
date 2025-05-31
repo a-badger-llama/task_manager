@@ -1,4 +1,4 @@
-<div class="max-w-md">
+<div class="max-w-md h-screen bg-primary">
   <%= form_with(model: Task.new) do |form| %>
     <%= render(TimePickerComponent.new(form: form, field: :due_time)) %>
   <% end %>

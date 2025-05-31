@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class DatetimePickerComponent < ViewComponent::Base
-  attr_reader :form, :record
+  attr_reader :form, :record, :include_badge
 
-  def initialize(form:)
+  def initialize(form:, include_badge: true)
     @form   = form
     @record = form.object
+    @include_badge = include_badge
   end
 
   def badge

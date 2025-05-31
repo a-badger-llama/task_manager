@@ -13,18 +13,37 @@ export default class extends Dropdown {
 
   show() {
     super.show();
-    this.adjustDropdownHeight();
+    this.adjustDropdownPosition();
+    this.inputTarget.classList.add("border-b-2", "border-secondary")
   }
 
-  adjustDropdownHeight() {
+  close() {
+    super.close();
+    this.inputTarget.classList.remove("border-b-2", "border-secondary")
+  }
+
+  adjustDropdownPosition() {
     const dropdownEl = this.menuTarget;
     const triggerEl = this.inputTarget
 
+    if (!dropdownEl || !triggerEl) return;
+
     const rect = triggerEl.getBoundingClientRect();
     const spaceBelow = window.innerHeight - rect.bottom;
-    const maxHeight = Math.max(spaceBelow, 200);
+    const spaceAbove = rect.top;
 
-    dropdownEl.style.maxHeight = `${maxHeight - 20}px`;
+    const shouldOpenAbove = spaceBelow < 250 && spaceAbove > spaceBelow;
+
+    const maxHeight = shouldOpenAbove ? spaceAbove - 20 : spaceBelow - 20;
+    dropdownEl.style.maxHeight = `${Math.max(maxHeight, 150)}px`;
     dropdownEl.style.overflowY = "auto";
+
+    // Positioning
+    dropdownEl.classList.remove("top-full", "bottom-full", "mt-2", "mb-2");
+    if (shouldOpenAbove) {
+      dropdownEl.classList.add("bottom-full", "mb-2"); // open upward
+    } else {
+      dropdownEl.classList.add("top-full", "mt-2"); // open downward
+    }
   }
 }

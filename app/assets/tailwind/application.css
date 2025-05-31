@@ -17,9 +17,7 @@
 
 @layer base {
   html {
-    color: var(--color-neutral);
-
-    @apply stroke-neutral;
+    @apply text-neutral stroke-neutral;
   }
 }
 

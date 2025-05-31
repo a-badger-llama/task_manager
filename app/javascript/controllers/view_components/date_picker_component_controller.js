@@ -5,11 +5,11 @@ export default class extends Controller {
   static targets = ["input"]
 
   connect() {
-    const options = {
+    this.picker = flatpickr(this.inputTarget, {
       inline: true,
-    };
-
-    this.picker = flatpickr(this.inputTarget, options);
+      dateFormat: "Y-m-d",
+      yearSelectorType: "dropdown"
+    });
   }
 
   disconnect() {

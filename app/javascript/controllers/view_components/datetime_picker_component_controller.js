@@ -22,7 +22,6 @@ export default class extends Controller {
 
   toggle() {
     this.element.focus();
-    console.log("show", document.activeElement)
     this.datetimePickerTarget.classList.toggle("hidden");
   }
 
