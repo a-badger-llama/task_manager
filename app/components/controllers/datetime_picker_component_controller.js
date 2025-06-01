@@ -4,11 +4,11 @@ export default class extends Controller {
   static targets = ["datetimePicker"]
 
   connect() {
-    document.addEventListener("click", this.outsideClickHandler.bind(this));
+    this.boundOutsideClickHandler = this.outsideClickHandler.bind(this);
+    document.addEventListener("click", this.boundOutsideClickHandler);
   }
-
   disconnect() {
-    document.removeEventListener("click", this.outsideClickHandler.bind(this));
+    document.removeEventListener("click", this.boundOutsideClickHandler);
   }
 
   show() {
