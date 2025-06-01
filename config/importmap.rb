@@ -2,6 +2,7 @@
 
 pin "application"
 pin_all_from "app/javascript/controllers", under: "controllers"
+pin_all_from "app/components/controllers", under: "controllers"
 
 # from gems
 pin "@hotwired/turbo-rails", to: "turbo.min.js"

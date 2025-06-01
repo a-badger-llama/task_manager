@@ -7,8 +7,7 @@ export default class extends Controller {
   connect() {
     this.picker = flatpickr(this.inputTarget, {
       inline: true,
-      dateFormat: "Y-m-d",
-      yearSelectorType: "dropdown"
+      monthSelectorType: "static",
     });
   }
 

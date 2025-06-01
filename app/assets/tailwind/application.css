@@ -33,7 +33,7 @@
 
     .prevMonthDay,
     .nextMonthDay {
-      @apply bg-transparent text-accent;
+      @apply bg-transparent text-primary;
     }
 
     .flatpickr-day.selected {

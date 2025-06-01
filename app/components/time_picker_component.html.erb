@@ -1,4 +1,4 @@
-<div class="flex" data-controller="view-components--time-picker-component" data-action="click@window->view-components--time-picker-component#hide touchstart@window->view-components--time-picker-component#hide keydown.up->view-components--time-picker-component#previousItem keydown.down->view-components--time-picker-component#nextItem keydown.esc->view-components--time-picker-component#hide">
+<div class="flex" data-controller="time-picker-component" data-action="click@window->time-picker-component#hide touchstart@window->time-picker-component#hide keydown.up->time-picker-component#previousItem keydown.down->time-picker-component#nextItem keydown.esc->time-picker-component#hide">
   <div class="w-fit px-2 flex items-center justify-center">
     <%= helpers.inline_svg("time-svgrepo-com.svg", class: "h-8 w-8") %>
   </div>
@@ -10,12 +10,12 @@
                         placeholder: placeholder,
                         data: {
                           "view_components--time-picker-component_target": "input",
-                          action: "click->view-components--time-picker-component#show blur->view-components--time-picker-component#hide"
+                          action: "click->time-picker-component#show blur->time-picker-component#hide"
                         } %>
 
-    <div class="hidden w-full bg-accent absolute overflow-y-auto" data-view-components--time-picker-component-target="menu">
+    <div class="hidden w-full bg-accent absolute overflow-y-auto" data-time-picker-component-target="menu">
       <% time_intervals(interval: 30) do |time| %>
-        <div class="p-2 cursor-pointer" data-value="<%= time %>" data-action="click->view-components--time-picker-component#select">
+        <div class="p-2 cursor-pointer" data-value="<%= time %>" data-action="click->time-picker-component#select">
           <%= time %>
         </div>
       <% end %>
