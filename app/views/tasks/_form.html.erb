@@ -6,23 +6,21 @@
       <label class="group">
         <span class="w-4 h-4 mr-2 cursor-pointer rounded-full border-1 border-neutral group-has-[input:checked]:border-secondary bg-transparent flex items-center justify-center transition">
           <%= form.check_box :completed, id: dom_id(task, :completed), class: "sr-only peer", data: { task_target: "complete", action: "input->task#toggleCompletion" }, autocomplete: "off" %>
-          <svg class="w-4 h-4 hidden peer-checked:block text-secondary" fill="currentColor" viewBox="0 0 16 16">
+          <svg class="w-4 h-4 hidden peer-checked:block text-secondary" fill="currentColor" stroke="currentColor" viewBox="0 0 16 16">
             <path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/>
           </svg>
         </span>
       </label>
 
-      <%= form.text_field :title, id: dom_id(task, :title), class: "w-full cursor-default text-sm bg-transparent border-none ring-0 p-0 focus:outline-none", placeholder: "Title", data: { task_target: "attribute title" }, autocomplete: "off" %>
+      <%= form.text_field :title, id: dom_id(task, :title), class: "w-full cursor-default text-sm bg-transparent border-none ring-0 p-0", placeholder: "Title", data: { task_target: "attribute title" }, autocomplete: "off" %>
     </div>
 
-    <div class="flex flex-col justify-center ml-6">
-      <%= form.text_area :description, id: dom_id(task, :description), class: class_names("text-xs bg-transparent border-none ring-0 p-0 resize-none h-6", hidden: task.persisted? && !task.description?), rows: 1, placeholder: "Description", data: { task_target: "attribute description display" }, autocomplete: "off" %>
+    <div class="flex flex-col justify-center ml-6 gap-2">
+      <%= form.text_area :description, id: dom_id(task, :description), class: class_names("text-xs bg-transparent border-none ring-0 p-0 resize-none", hidden: task.persisted? && !task.description?), rows: 1, placeholder: "Description", data: { task_target: "attribute description display" }, autocomplete: "off" %>
 
-      <div class="flex">
-        <%= form.date_field :due_date, id: dom_id(task, :due_date), class: class_names("bg-transparent border-none ring-0 p-0", hidden: task.persisted? && !task.due_date), data: { task_target: "attribute display", action: "input->task#autoSave" }, autocomplete: "off" %>
-        <%= form.time_field :due_time, id: dom_id(task, :due_time), class: class_names("bg-transparent border-none ring-0 p-0", hidden: task.persisted? && !task.due_time), data: { task_target: "attribute display", action: "input->task#autoSave" }, autocomplete: "off" %>
+      <div class="<%= class_names("relative flex", hidden: task.persisted? && !task.due_at) %>" data-task-target="display">
+        <%= render DatetimePickerComponent.new(form: form) %>
       </div>
     </div>
   </div>
 <% end %>
-

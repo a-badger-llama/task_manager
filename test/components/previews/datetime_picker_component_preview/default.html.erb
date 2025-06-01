@@ -1,0 +1,3 @@
+<%= form_with(model: Task.new) do |form| %>
+  <%= render DatetimePickerComponent.new(form: form, include_badge: false) %>
+<% end %>
