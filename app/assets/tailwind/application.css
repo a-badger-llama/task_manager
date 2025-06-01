@@ -37,7 +37,7 @@
     }
 
     .flatpickr-day.selected {
-      @apply border-secondary;
+      @apply border-secondary bg-transparent;
 
       &:hover {
         @apply bg-secondary;
