@@ -1,30 +1,45 @@
 import { Dropdown } from "tailwindcss-stimulus-components"
 
 export default class extends Dropdown {
-  static targets = ["input"]
+  connect() {
+    super.connect();
 
-  connect() {}
+    this.inputField = this.element.querySelector("input");
+    this.boundOutsideClickHandler = this.outsideClickHandler.bind(this);
+    ["click", "touchstart"].forEach(eventType => {
+      document.addEventListener(eventType, this.boundOutsideClickHandler);
+    })
+  }
+
+  disconnect() {
+    super.disconnect();
+
+    ["click", "touchstart"].forEach(eventType => {
+      document.removeEventListener(eventType, this.boundOutsideClickHandler);
+    })
+  }
 
   select(event) {
     const value = event.target.dataset.value;
-    this.inputTarget.value = value;
+    this.inputField.value = value;
+    this.inputField.dispatchEvent(new Event('input', {bubbles: true}));
     this.close();
   }
 
   show() {
     super.show();
     this.adjustDropdownPosition();
-    this.inputTarget.classList.add("border-b-2", "border-secondary")
+    this.inputField.classList.add("border-b-2", "border-secondary")
   }
 
   close() {
     super.close();
-    this.inputTarget.classList.remove("border-b-2", "border-secondary")
+    this.inputField.classList.remove("border-b-2", "border-secondary")
   }
 
   adjustDropdownPosition() {
     const dropdownEl = this.menuTarget;
-    const triggerEl = this.inputTarget
+    const triggerEl = this.inputField
 
     if (!dropdownEl || !triggerEl) return;
 
@@ -44,6 +59,12 @@ export default class extends Dropdown {
       dropdownEl.classList.add("bottom-full", "mb-2"); // open upward
     } else {
       dropdownEl.classList.add("top-full", "mt-2"); // open downward
+    }
+  }
+
+  outsideClickHandler(event) {
+    if (!this.element.contains(event.target) && this.openValue === true) {
+      this.close();
     }
   }
 }

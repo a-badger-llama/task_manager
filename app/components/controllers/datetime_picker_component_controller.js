@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["datetimePicker"]
+  static targets = ["datetimePicker", "badge"]
 
   connect() {
     this.boundOutsideClickHandler = this.outsideClickHandler.bind(this);
@@ -17,16 +17,13 @@ export default class extends Controller {
 
   hide() {
     this.datetimePickerTarget.classList.add("hidden");
-    this.element.blur();
   }
 
   toggle() {
-    this.element.focus();
     this.datetimePickerTarget.classList.toggle("hidden");
   }
 
   outsideClickHandler(event) {
-    // Check if the click happens outside the datetimePicker or the widget itself
     if (!this.element.contains(event.target)) {
       this.hide();
     }
