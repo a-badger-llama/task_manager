@@ -1,0 +1,6 @@
+<div data-controller="task-attribute-component" data-task-component-target="attribute">
+  <% if render_display? %>
+    <div class="cursor-default" data-task-attribute-component-target="display"><%= display %></div>
+  <% end %>
+  <div class="hidden" data-task-attribute-component-target="edit"><%= edit %></div>
+</div>

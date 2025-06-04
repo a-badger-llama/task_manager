@@ -1,0 +1,9 @@
+<% task = Task.new(
+  title:        "The title of the task",
+  description:  "Some additional details about this task",
+  due_at:       Time.zone.now + 1.hour,
+  has_due_time: true,
+  ) %>
+<div class="bg-primary">
+  <%= render(TaskComponent.new(task: task)) %>
+</div>
