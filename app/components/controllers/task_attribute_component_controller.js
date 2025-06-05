@@ -2,6 +2,7 @@ import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["display", "edit"]
+  static values = {task: Number}
 
   connect() {
     this.selectOnFocus = this.selectOnFocus.bind(this)
@@ -36,18 +37,18 @@ export default class extends Controller {
   }
 
   display(event) {
+    if (event.detail.task !== this.taskValue) return;
+
     this.editTarget.classList.add("hidden");
     this.displayTarget.classList.remove("hidden");
   }
 
   edit(event) {
+    if (event.detail.task !== this.taskValue) return;
+
     this.displayTarget.classList.add("hidden");
     this.editTarget.classList.remove("hidden");
 
-    if (this.element.contains(event.explicitOriginalTarget)) {
-      const input = this.editTarget.querySelector(":is(input,textarea):not([type=hidden])");
-
-      input.focus();
-    }
+    if (this.element.contains(event.target)) this.editTarget.children[0].focus();
   }
 }

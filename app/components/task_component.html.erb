@@ -1,16 +1,12 @@
-<div id="<%= dom_id(task) %>" class="flex p-1 hover:bg-accent" data-controller="task-component">
+<div id="<%= dom_id(task) %>" class="flex relative p-1 hover:bg-accent" data-controller="task-component" data-task-component-task-value="<%= task.id %>">
   <%= form_with(model: task, class: "flex flex-grow", data: { "task-component-target": "form" }) do |form| %>
-    <label class="group">
-      <span class="w-4 h-4 mx-4 my-1 cursor-pointer rounded-full border-1 border-neutral group-has-[input:checked]:border-secondary bg-transparent flex items-center justify-center transition">
-        <%= check_box_tag :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off" %>
-        <svg class="w-4 h-4 hidden peer-checked:block text-secondary" fill="currentColor" stroke="currentColor" viewBox="0 0 16 16">
-          <path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/>
-        </svg>
-      </span>
-    </label>
+    <%= render CheckBoxComponent.new do |component| %>
+      <% component.with_checkbox_peer do %>
+        <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off" %>
+      <% end %>
+    <% end %>
 
     <div class="flex flex-grow flex-col">
-      <!-- Task (tasks/show) -->
       <div class="flex flex-col">
         <%= render TaskAttributeComponent.new(task: task, attribute: :title) do |component| %>
           <% component.with_display do %>
@@ -30,32 +26,26 @@
         <% end %>
       </div>
 
-      <%= render TaskAttributeComponent.new(task: task, attribute: :due_at) do |component| %>
-        <% component.with_display do %>
-          <%= render DatetimePickerComponent.new do |component| %>
-            <% component.with_datetime_badge do %>
-              <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
+      <%= render DatetimePickerComponent.new do |component| %>
+        <% component.with_datetime_badge do %>
+          <%= render TaskAttributeComponent.new(task: task, attribute: :due_at) do |component| %>
+            <% component.with_display do %>
+              <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
+                <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
+              </div>
             <% end %>
-            <% component.with_date_field do %>
-              <%= form.date_field :due_date, autocomplete: "off", class: "hidden" %>
-            <% end %>
-            <% component.with_time_field do %>
-              <%= form.text_field :due_time, autocomplete: "off", class: "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0", placeholder: "Set time" %>
+            <% component.with_edit do %>
+              <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
+                <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
+              </div>
             <% end %>
           <% end %>
         <% end %>
-        <% component.with_edit do %>
-          <%= render DatetimePickerComponent.new do |component| %>
-            <% component.with_datetime_badge do %>
-              <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
-            <% end %>
-            <% component.with_date_field do %>
-              <%= form.date_field :due_date, autocomplete: "off", class: "hidden" %>
-            <% end %>
-            <% component.with_time_field do %>
-              <%= form.text_field :due_time, autocomplete: "off", class: "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0", placeholder: "Set time" %>
-            <% end %>
-          <% end %>
+        <% component.with_date_field do %>
+          <%= form.date_field :due_date, autocomplete: "off", class: "hidden" %>
+        <% end %>
+        <% component.with_time_field do %>
+          <%= form.text_field :due_time, autocomplete: "off", class: "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0", placeholder: "Set time" %>
         <% end %>
       <% end %>
     </div>
@@ -63,7 +53,7 @@
 
   <% if task.persisted? %>
     <div class="relative flex items-center" data-controller="dropdown">
-      <span class="px-2 py-1 cursor-pointer rounded-lg hover:bg-rose-400" data-action="click->dropdown#toggle click@window->dropdown#hide">
+      <span class="px-1 cursor-pointer rounded-lg hover:bg-rose-400" data-action="click->dropdown#toggle click@window->dropdown#hide">
         &#x22EE;
       </span>
 
@@ -75,7 +65,7 @@
            data-transition-leave="transition ease-in duration-150"
            data-transition-leave-from="opacity-100 translate-y-0"
            data-transition-leave-to="opacity-0 translate-y-1">
-        <span class="cursor-pointer px-8 py-2 hover:bg-rose-400">Delete</span>
+        <span class="cursor-pointer px-4 py-1 hover:bg-rose-400" data-action="click->task-component#deleteTask">Delete</span>
       </div>
     </div>
   <% end %>
