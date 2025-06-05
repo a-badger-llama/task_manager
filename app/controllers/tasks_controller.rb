@@ -37,7 +37,7 @@ class TasksController < ApplicationController
         format.turbo_stream
         format.json { head :no_content }
       else
-        format.json @task.errors, status: :unprocessable_entity
+        format.json { render json: { errors: @task.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -50,7 +50,7 @@ class TasksController < ApplicationController
         format.turbo_stream
         format.json { head :no_content }
       else
-        format.json @task.errors, status: :unprocessable_entity
+        format.json { render json: { errors: @task.errors }, status: :unprocessable_entity }
       end
     end
   end

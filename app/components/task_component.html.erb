@@ -1,5 +1,5 @@
 <div id="<%= dom_id(task) %>" class="flex p-1 hover:bg-accent" data-controller="task-component">
-  <%= form_with(model: task, class: "flex flex-grow") do |form| %>
+  <%= form_with(model: task, class: "flex flex-grow", data: { "task-component-target": "form" }) do |form| %>
     <label class="group">
       <span class="w-4 h-4 mx-4 my-1 cursor-pointer rounded-full border-1 border-neutral group-has-[input:checked]:border-secondary bg-transparent flex items-center justify-center transition">
         <%= check_box_tag :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off" %>
@@ -17,7 +17,7 @@
             <%= task.title %>
           <% end %>
           <%= component.with_edit do %>
-            <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off" %>
+            <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
           <% end %>
         <% end %>
         <%= render TaskAttributeComponent.new(task: task, attribute: :description) do |component| %>
@@ -25,7 +25,7 @@
             <div class="text-xs opacity-75"><%= task.description %></div>
           <% end %>
           <% component.with_edit do %>
-            <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off" %>
+            <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
           <% end %>
         <% end %>
       </div>
