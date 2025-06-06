@@ -1,3 +1,18 @@
-<%= form_with(model: Task.new) do |form| %>
-  <%= render DatetimePickerComponent.new(form: form, include_badge: false) %>
+<%= render DatetimePickerComponent.new do |component| %>
+  <% component.with_datetime_badge do %>
+    <div class="text-xs w-fit px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
+      <%= inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria:  { label: "Open date and time picker" }) %>
+    </div>
+  <% end %>
+
+  <% component.with_date_field do %>
+    <%= date_field_tag "task[due_date]", Date.tomorrow, autocomplete: "off", class: "hidden" %>
+  <% end %>
+
+  <% component.with_time_field do %>
+    <%= text_field_tag "task[due_time]", nil,
+                       autocomplete: "off",
+                       class:        "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0",
+                       placeholder:  "Set time" %>
+  <% end %>
 <% end %>

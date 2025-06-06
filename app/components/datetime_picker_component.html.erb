@@ -1,17 +1,19 @@
 <div class="flex flex-col gap-4" data-controller="datetime-picker-component">
-  <% if include_badge %>
-    <div class="w-fit px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center" data-action="click->datetime-picker-component#toggle">
-      <%= badge %>
-    </div>
-  <% end %>
+  <div data-action="click->datetime-picker-component#toggle">
+    <%= datetime_badge %>
+  </div>
 
-  <div class="<%= helpers.class_names("w-fit flex flex-col p-4 gap-4 bg-accent rounded-xl absolute z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2", hidden: include_badge) %>" data-datetime-picker-component-target="datetimePicker">
-    <%= render(DatePickerComponent.new(form: form, field: :due_date)) %>
+  <div class="<%= helpers.class_names(%w(w-fit flex flex-col p-4 gap-4 bg-accent rounded-xl absolute z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden)) %>" data-datetime-picker-component-target="datetimePicker">
+    <%= render DatePickerComponent.new do %>
+      <%= date_field %>
+    <% end %>
 
     <div class="w-full h-px bg-primary"></div>
 
     <div class="flex justify-around items-center">
-      <%= render TimePickerComponent.new(form: form, field: :due_time) %>
+      <%= render TimePickerComponent.new do %>
+        <%= time_field %>
+      <% end %>
 
       <div class="w-fit px-2 flex items-center justify-center cursor-pointer">
         <%= helpers.inline_svg("cycle-svgrepo-com.svg", class: "h-8 w-8") %>

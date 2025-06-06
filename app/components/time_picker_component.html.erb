@@ -1,20 +1,13 @@
-<div class="flex" data-controller="time-picker-component" data-action="click@window->time-picker-component#hide touchstart@window->time-picker-component#hide keydown.up->time-picker-component#previousItem keydown.down->time-picker-component#nextItem keydown.esc->time-picker-component#hide">
+<div class="flex" data-controller="time-picker-component">
   <div class="w-fit px-2 flex items-center justify-center">
     <%= helpers.inline_svg("time-svgrepo-com.svg", class: "h-8 w-8") %>
   </div>
 
-  <div class="relative">
-    <%= form.text_field field,
-                        autocomplete: "off",
-                        class: "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0",
-                        placeholder: placeholder,
-                        data: {
-                          "time-picker-component-target": "input",
-                          action: "click->time-picker-component#show blur->time-picker-component#hide"
-                        } %>
+  <div class="relative flex">
+    <div data-action="click->time-picker-component#show"><%= content %></div>
 
     <div class="hidden w-full bg-accent absolute overflow-y-auto" data-time-picker-component-target="menu">
-      <% time_intervals(interval: 30) do |time| %>
+      <% time_intervals do |time| %>
         <div class="p-2 cursor-pointer" data-value="<%= time %>" data-action="click->time-picker-component#select">
           <%= time %>
         </div>
