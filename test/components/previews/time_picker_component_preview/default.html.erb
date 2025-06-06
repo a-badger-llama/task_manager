@@ -1,5 +1,8 @@
-<div class="max-w-md h-screen bg-primary">
-  <%= form_with(model: Task.new) do |form| %>
-    <%= render(TimePickerComponent.new(form: form, field: :due_time)) %>
+<div class="max-w-md bg-primary">
+  <%= render(TimePickerComponent.new) do %>
+    <%= text_field_tag "task[due_time]", nil,
+                       autocomplete: "off",
+                       class:        "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0",
+                       placeholder:  "Set time" %>
   <% end %>
 </div>
