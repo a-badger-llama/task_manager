@@ -59,7 +59,5 @@ class Task < ApplicationRecord
 
     self.has_due_time = due_time.present?
     self.due_at = Time.zone.parse("#{due_date} #{due_time.presence}")
-
-    [1, 2, 3]
   end
 end
