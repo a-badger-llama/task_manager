@@ -1,1 +1,1 @@
-<%= turbo_stream.replace @dom_id, partial: "task", locals: { task: @task } %>
+<%= turbo_stream.replace @dom_id, render(TaskComponent.new(task: @task)) %>

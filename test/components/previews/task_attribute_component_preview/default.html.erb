@@ -1,0 +1,7 @@
+<% task = Task.new(description: "My Description") %>
+
+<%= render(TaskAttributeComponent.new(task: task, attribute: :description)) do |component| %>
+  <% component.with_display do %>
+    <%= task.description %>
+  <% end %>
+<% end %>
