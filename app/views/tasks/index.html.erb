@@ -15,14 +15,10 @@
       </span>
     <% end %>
 
-    <template id="task-template"><%= render Task.new %></template>
+    <template id="task-template"><%= render TaskComponent.new(task: Task.new) %></template>
   </div>
 
-  <div id="tasks" class="flex flex-col" data-controller="task-list">
-    <% @tasks.each do |task| %>
-      <%= render task %>
-    <% end %>
-  </div>
+  <%= render TaskListComponent.new(tasks: @tasks, dom_id: "tasks") %>
 
   <div class="flex flex-col" data-controller="toggle">
     <div class="flex items-center p-1 gap-1 cursor-pointer" data-toggle-target="button" data-action="click->toggle#toggle">
@@ -31,10 +27,8 @@
       Completed (<span id="completed-count"><%= @completed_tasks.size %></span>)
     </div>
 
-    <div id="completed-tasks" class="hidden" data-toggle-target="toggleable">
-      <% @completed_tasks.each do |task| %>
-        <%= render task %>
-      <% end %>
+    <div class="hidden" data-toggle-target="toggleable">
+      <%= render TaskListComponent.new(tasks: @completed_tasks, dom_id: "completed-tasks") %>
     </div>
   </div>
 </div>

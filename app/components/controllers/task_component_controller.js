@@ -5,22 +5,24 @@ const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 
 export default class extends Controller {
   static targets = ["attributeField", "form"]
-  static values = {task: Number}
+  static values = {
+    task:   Number,
+    active: { type: Boolean, default: false }
+  }
 
   connect() {
-    this.activeFocus = false;
     this.pendingChanges = false;
     this.pendingStream = null;
-    this.setPendingChanges = this.setPendingChanges.bind(this);
-    this.setFocus = this.setFocus.bind(this);
+    this.boundSetPendingChanges = this.setPendingChanges.bind(this);
+    this.boundSetFocus = this.setFocus.bind(this);
 
-    document.addEventListener("change", this.setPendingChanges);
-    document.addEventListener("click", this.setFocus);
+    document.addEventListener("change", this.boundSetPendingChanges);
+    document.addEventListener("click", this.boundSetFocus);
   }
 
   disconnect() {
-    document.removeEventListener("change", this.setPendingChanges);
-    document.removeEventListener("click", this.setFocus);
+    document.removeEventListener("change", this.boundSetPendingChanges);
+    document.removeEventListener("click", this.boundSetFocus);
   }
 
   setPendingChanges(event) {
@@ -29,28 +31,14 @@ export default class extends Controller {
     this.pendingChanges = true;
   }
 
-  showDisplay(event) {
-    this.dispatch("display", {
-      detail: { task: this.taskValue },
-      bubbles: event.bubbles,
-      cancelable: event.cancelable,
-      target: event.target,
-    });
-  }
+  setFocus(event, value) {
+    if (value !== undefined && value !== null) {
+      this.activeValue = value;
+    } else {
+      this.activeValue = this.element.contains(event.target);
+    }
 
-  showEdit(event) {
-    this.dispatch("edit", {
-      detail: { task: this.taskValue },
-      bubbles: event.bubbles,
-      cancelable: event.cancelable,
-      target: event.target,
-    });
-  }
-
-  setFocus(event) {
-    this.activeFocus = this.element.contains(event.target);
-
-    if (this.activeFocus) {
+    if (this.activeValue) {
       this.element.classList.add("bg-accent");
       this.showEdit(event);
     } else {
@@ -60,10 +48,29 @@ export default class extends Controller {
     }
   }
 
+  showDisplay(event) {
+    this.dispatch("display", {
+      detail:     { task: this.taskValue },
+      bubbles:    event.bubbles,
+      cancelable: event.cancelable,
+      target:     event.target,
+    });
+  }
+
+  showEdit(event) {
+    this.dispatch("edit", {
+      detail:     { task: this.taskValue },
+      bubbles:    event.bubbles,
+      cancelable: event.cancelable,
+      target:     event.target,
+    });
+  }
+
   safeSubmit() {
-    if (!this.pendingChanges || this.isEmpty() || this.activeFocus) return;
+    if (!this.pendingChanges || this.isEmpty() || this.activeValue) return;
 
     this.submitForm();
+    this.pendingChanges = false;
   }
 
   submitForm() {
@@ -110,9 +117,13 @@ export default class extends Controller {
   }
 
   renderSafely() {
-    if (this.pendingStream && !this.activeFocus) {
+    if (this.pendingStream && !this.activeValue) {
       Turbo.renderStreamMessage(this.pendingStream);
       this.pendingStream = null;
+      this.dispatch("rendered", {
+        detail:     { task: this.taskValue },
+        target:     this.element,
+      });
     }
   }
 
@@ -122,5 +133,11 @@ export default class extends Controller {
 
   hideSelf() {
     this.element.classList.add("hidden");
+  }
+
+  toggleCompletion(event) {
+    this.setPendingChanges(event);
+    this.hideSelf();
+    this.setFocus(event, false);
   }
 }

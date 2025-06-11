@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     root to: "tasks#index", as: :user_root
   end
 
-  root to: redirect("/users/sign_up")
+  root to: redirect("/users/sign_in")
 
   resources :tasks do
     collection do
