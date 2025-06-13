@@ -1,7 +1,13 @@
-<div id="<%= dom_id %>" class="flex flex-col" data-controller="task-list-component">
-  <% @tasks.each do |task| %>
-    <div class="drag-handle" data-task-list-component-target="task" data-task-id="<%= task.id %>">
+<div class="flex flex-col" data-controller="task-list-component">
+  <%#= tag.div class: "flex", data: { controller: "task" } do %>
+    <%#= new_button %>
+
+<!--    <template id="task-template"><%#= render TaskComponent.new(task: Task.new) %></template>-->
+  <%# end %>
+
+  <div id="<%= dom_id %>" class="flex flex-col" data-task-list-component-target="taskList">
+    <% @tasks.each do |task| %>
       <%= render TaskComponent.new(task: task) %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

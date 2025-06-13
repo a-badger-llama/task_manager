@@ -2,14 +2,14 @@ import { Controller } from "@hotwired/stimulus";
 import Sortable from "sortablejs";
 
 export default class extends Controller {
-  static targets = ["task"]
+  static targets = ["taskList", "task"]
 
   connect() {
     this.boundDragStart = this.dragStart.bind(this);
     this.boundDragEnd = this.dragEnd.bind(this);
     this.boundUpdatePositions = this.updatePositions.bind(this);
 
-    this.sortable = Sortable.create(this.element, {
+    this.sortable = Sortable.create(this.taskListTarget, {
       handle: ".drag-handle",
       animation: 150,
       onEnd: this.boundUpdatePositions.bind(this),
@@ -34,9 +34,6 @@ export default class extends Controller {
 
   updatePositions(_event) {
     requestAnimationFrame(() => {
-      console.log("updatePositions", _event)
-      console.log("Current timestamp:", Date.now())
-
       const ids = this.taskTargets.map((task) => task.dataset.taskId)
 
       fetch("/tasks/reorder", {

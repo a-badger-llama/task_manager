@@ -6,23 +6,24 @@ const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 export default class extends Controller {
   static targets = ["attributeField", "form"]
   static values = {
-    task:   Number,
+    task: { type: Number, default: null },
     active: { type: Boolean, default: false }
   }
 
   connect() {
+    this.taskValue = this.element.dataset.taskId
     this.pendingChanges = false;
     this.pendingStream = null;
     this.boundSetPendingChanges = this.setPendingChanges.bind(this);
-    this.boundSetFocus = this.setFocus.bind(this);
+    this.boundSetActiveValue = this.setActiveValue.bind(this);
 
     document.addEventListener("change", this.boundSetPendingChanges);
-    document.addEventListener("click", this.boundSetFocus);
+    document.addEventListener("click", this.boundSetActiveValue);
   }
 
   disconnect() {
     document.removeEventListener("change", this.boundSetPendingChanges);
-    document.removeEventListener("click", this.boundSetFocus);
+    document.removeEventListener("click", this.boundSetActiveValue);
   }
 
   setPendingChanges(event) {
@@ -31,7 +32,7 @@ export default class extends Controller {
     this.pendingChanges = true;
   }
 
-  setFocus(event, value) {
+  setActiveValue(event, value) {
     if (value !== undefined && value !== null) {
       this.activeValue = value;
     } else {
@@ -39,11 +40,17 @@ export default class extends Controller {
     }
 
     if (this.activeValue) {
-      this.element.classList.add("bg-accent");
       this.showEdit(event);
     } else {
-      this.element.classList.remove("bg-accent");
       this.showDisplay(event);
+    }
+  }
+
+  activeValueChanged() {
+    if (this.activeValue) {
+      this.element.classList.add("bg-accent");
+    } else {
+      this.element.classList.remove("bg-accent");
       this.safeSubmit();
     }
   }
@@ -51,8 +58,6 @@ export default class extends Controller {
   showDisplay(event) {
     this.dispatch("display", {
       detail:     { task: this.taskValue },
-      bubbles:    event.bubbles,
-      cancelable: event.cancelable,
       target:     event.target,
     });
   }
@@ -60,8 +65,6 @@ export default class extends Controller {
   showEdit(event) {
     this.dispatch("edit", {
       detail:     { task: this.taskValue },
-      bubbles:    event.bubbles,
-      cancelable: event.cancelable,
       target:     event.target,
     });
   }
@@ -138,6 +141,6 @@ export default class extends Controller {
   toggleCompletion(event) {
     this.setPendingChanges(event);
     this.hideSelf();
-    this.setFocus(event, false);
+    this.setActiveValue(event, false);
   }
 }
