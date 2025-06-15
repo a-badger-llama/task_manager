@@ -6,7 +6,7 @@ const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 export default class extends Controller {
   static targets = ["attributeField", "form"]
   static values = {
-    task: { type: Number, default: null },
+    task: { type: Number, default: 0 },
     active: { type: Boolean, default: false }
   }
 

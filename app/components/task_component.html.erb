@@ -2,7 +2,7 @@
   <%= form_with(model: task, class: "flex flex-grow", data: { "task-component-target": "form" }) do |form| %>
     <%= render CheckBoxComponent.new do |component| %>
       <% component.with_checkbox_peer do %>
-        <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#toggleCompletion"} %>
+        <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#toggleCompletion" } %>
       <% end %>
     <% end %>
 

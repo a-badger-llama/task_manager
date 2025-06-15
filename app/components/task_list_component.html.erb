@@ -1,9 +1,9 @@
 <div class="flex flex-col" data-controller="task-list-component">
-  <%#= tag.div class: "flex", data: { controller: "task" } do %>
-    <%#= new_button %>
+  <div data-action="click->task-list-component#prependTask">
+    <%= new_button %>
 
-<!--    <template id="task-template"><%#= render TaskComponent.new(task: Task.new) %></template>-->
-  <%# end %>
+    <template data-task-list-component-target="taskTemplate"><%= render TaskComponent.new(task: Task.new) %></template>
+  </div>
 
   <div id="<%= dom_id %>" class="flex flex-col" data-task-list-component-target="taskList">
     <% @tasks.each do |task| %>

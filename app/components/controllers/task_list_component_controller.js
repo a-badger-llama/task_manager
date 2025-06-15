@@ -1,8 +1,8 @@
-import { Controller } from "@hotwired/stimulus";
-import Sortable from "sortablejs";
+import {Controller} from "@hotwired/stimulus";
+import Sortable     from "sortablejs";
 
 export default class extends Controller {
-  static targets = ["taskList", "task"]
+  static targets = ["taskList", "task", "taskTemplate"]
 
   connect() {
     this.boundDragStart = this.dragStart.bind(this);
@@ -10,10 +10,10 @@ export default class extends Controller {
     this.boundUpdatePositions = this.updatePositions.bind(this);
 
     this.sortable = Sortable.create(this.taskListTarget, {
-      handle: ".drag-handle",
-      animation: 150,
-      onEnd: this.boundUpdatePositions.bind(this),
-      onMove: this.handleMove.bind(this),
+      handle:     ".drag-handle",
+      animation:  150,
+      onEnd:      this.boundUpdatePositions.bind(this),
+      onMove:     this.handleMove.bind(this),
       ghostClass: "opacity-0",
     })
     document.addEventListener("task-component:rendered", this.boundUpdatePositions.bind(this))
@@ -37,12 +37,12 @@ export default class extends Controller {
       const ids = this.taskTargets.map((task) => task.dataset.taskId)
 
       fetch("/tasks/reorder", {
-        method: "POST",
+        method:  "POST",
         headers: {
           "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ids }),
+        body:    JSON.stringify({ids}),
       })
     })
   }
@@ -70,5 +70,23 @@ export default class extends Controller {
     requestAnimationFrame(() => {
       document.querySelectorAll('.drop-indicator').forEach(el => el.remove());
     })
+  }
+
+  prependTask() {
+    const newTask= this.createNewTask();
+    const titleInput= newTask.querySelector("[data-task-attribute='title']");
+
+    this.taskListTarget.prepend(newTask);
+    requestAnimationFrame(() => {
+      titleInput.click()
+    });
+  }
+
+  createNewTask() {
+    const taskTemplate = this.taskTemplateTarget;
+    const clone = taskTemplate.content.cloneNode(true);
+    const newTask = clone.firstElementChild;
+    newTask.id = `${newTask.id}_${Date.now()}`;
+    return newTask;
   }
 }
