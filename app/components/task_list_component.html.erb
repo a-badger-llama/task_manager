@@ -1,0 +1,13 @@
+<div class="flex flex-col" data-controller="task-list-component">
+  <div data-action="click->task-list-component#prependTask">
+    <%= new_button %>
+
+    <template data-task-list-component-target="taskTemplate"><%= render TaskComponent.new(task: Task.new) %></template>
+  </div>
+
+  <div id="<%= dom_id %>" class="flex flex-col" data-task-list-component-target="taskList">
+    <% @tasks.each do |task| %>
+      <%= render TaskComponent.new(task: task) %>
+    <% end %>
+  </div>
+</div>

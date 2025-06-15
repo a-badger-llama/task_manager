@@ -3,9 +3,11 @@
     <div class="flex items-center justify-between">
       <h1 class="text-lg">Task List</h1>
     </div>
+  </div>
 
-    <%= tag.div class: "flex", data: { controller: "task" } do %>
-      <span class="cursor-pointer flex items-center w-full my-1 px-2 py-1 rounded-2xl hover:bg-accent text-secondary" data-action="click->task#prependTask">
+  <%= render TaskListComponent.new(tasks: @tasks, dom_id: "tasks") do |component| %>
+    <% component.with_new_button do %>
+      <span class="cursor-pointer flex items-center w-full my-1 px-2 py-1 rounded-2xl hover:bg-accent text-secondary">
         <div class="w-4 h-4 mr-2 rounded-full border-1 border-secondary flex items-center justify-center">
           <svg class="w-5 h-5 text-secondary" fill="currentColor" stroke="currentColor" viewBox="0 0 16 16">
             <path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/>
@@ -14,15 +16,7 @@
         New Task
       </span>
     <% end %>
-
-    <template id="task-template"><%= render Task.new %></template>
-  </div>
-
-  <div id="tasks" class="flex flex-col" data-controller="task-list">
-    <% @tasks.each do |task| %>
-      <%= render task %>
-    <% end %>
-  </div>
+  <% end %>
 
   <div class="flex flex-col" data-controller="toggle">
     <div class="flex items-center p-1 gap-1 cursor-pointer" data-toggle-target="button" data-action="click->toggle#toggle">
@@ -31,10 +25,8 @@
       Completed (<span id="completed-count"><%= @completed_tasks.size %></span>)
     </div>
 
-    <div id="completed-tasks" class="hidden" data-toggle-target="toggleable">
-      <% @completed_tasks.each do |task| %>
-        <%= render task %>
-      <% end %>
+    <div class="hidden" data-toggle-target="toggleable">
+      <%= render TaskListComponent.new(tasks: @completed_tasks, dom_id: "completed-tasks") %>
     </div>
   </div>
 </div>

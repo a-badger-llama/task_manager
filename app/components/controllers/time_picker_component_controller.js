@@ -22,7 +22,7 @@ export default class extends Dropdown {
   select(event) {
     const value = event.target.dataset.value;
     this.inputField.value = value;
-    this.inputField.dispatchEvent(new Event('input', {bubbles: true}));
+    this.inputField.dispatchEvent(new Event('change', {bubbles: true}));
     this.close();
   }
 

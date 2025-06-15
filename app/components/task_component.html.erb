@@ -1,30 +1,29 @@
-<div id="<%= dom_id(task) %>" class="flex relative p-1 hover:bg-accent" data-controller="task-component" data-task-component-task-value="<%= task.id %>">
+<%= tag.div id: dom_id(task), class: "flex relative p-1 hover:bg-accent drag-handle", data: data_options do %>
   <%= form_with(model: task, class: "flex flex-grow", data: { "task-component-target": "form" }) do |form| %>
     <%= render CheckBoxComponent.new do |component| %>
       <% component.with_checkbox_peer do %>
-        <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off" %>
+        <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#toggleCompletion" } %>
       <% end %>
     <% end %>
 
     <div class="flex flex-grow flex-col">
-      <div class="flex flex-col">
-        <%= render TaskAttributeComponent.new(task: task, attribute: :title) do |component| %>
-          <% component.with_display do %>
-            <%= task.title %>
-          <% end %>
-          <%= component.with_edit do %>
-            <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
-          <% end %>
+      <%= render TaskAttributeComponent.new(task: task, attribute: :title) do |component| %>
+        <% component.with_display do %>
+          <%= task.title %>
         <% end %>
-        <%= render TaskAttributeComponent.new(task: task, attribute: :description) do |component| %>
-          <% component.with_display do %>
-            <div class="text-xs opacity-75"><%= task.description %></div>
-          <% end %>
-          <% component.with_edit do %>
-            <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
-          <% end %>
+        <%= component.with_edit do %>
+          <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
         <% end %>
-      </div>
+      <% end %>
+
+      <%= render TaskAttributeComponent.new(task: task, attribute: :description) do |component| %>
+        <% component.with_display do %>
+          <div class="text-xs opacity-75"><%= task.description %></div>
+        <% end %>
+        <% component.with_edit do %>
+          <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
+        <% end %>
+      <% end %>
 
       <%= render DatetimePickerComponent.new do |component| %>
         <% component.with_datetime_badge do %>
@@ -69,4 +68,4 @@
       </div>
     </div>
   <% end %>
-</div>
+<% end %>

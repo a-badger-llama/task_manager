@@ -1,0 +1,5 @@
+<% tasks = Task.order(position: :asc) %>
+
+<div class="bg-primary">
+  <%= render(TaskListComponent.new(tasks: tasks, dom_id: "tasks")) %>
+</div>
