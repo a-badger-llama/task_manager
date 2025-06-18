@@ -4,14 +4,14 @@ import {Turbo}      from "@hotwired/turbo-rails";
 const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 
 export default class extends Controller {
-  static targets = ["attributeField", "form"]
+  static targets = ["attributeField", "display", "form"]
   static values = {
     task: { type: Number, default: 0 },
     active: { type: Boolean, default: false }
   }
 
   connect() {
-    this.taskValue = this.element.dataset.taskId
+    this.taskValue = this.element.dataset.taskId;
     this.pendingChanges = false;
     this.pendingStream = null;
     this.boundSetPendingChanges = this.setPendingChanges.bind(this);
@@ -38,35 +38,21 @@ export default class extends Controller {
     } else {
       this.activeValue = this.element.contains(event.target);
     }
-
-    if (this.activeValue) {
-      this.showEdit(event);
-    } else {
-      this.showDisplay(event);
-    }
   }
 
   activeValueChanged() {
     if (this.activeValue) {
       this.element.classList.add("bg-accent");
+      this.element.classList.remove("drag-handle");
+      this.displayTarget.classList.add("hidden")
+      this.formTarget.classList.remove("hidden")
     } else {
       this.element.classList.remove("bg-accent");
-      this.safeSubmit();
+      this.element.classList.add("drag-handle");
+      this.displayTarget.classList.remove("hidden")
+      this.formTarget.classList.add("hidden")
+      // this.safeSubmit();
     }
-  }
-
-  showDisplay(event) {
-    this.dispatch("display", {
-      detail:     { task: this.taskValue },
-      target:     event.target,
-    });
-  }
-
-  showEdit(event) {
-    this.dispatch("edit", {
-      detail:     { task: this.taskValue },
-      target:     event.target,
-    });
   }
 
   safeSubmit() {
@@ -138,9 +124,9 @@ export default class extends Controller {
     this.element.classList.add("hidden");
   }
 
-  toggleCompletion(event) {
-    this.setPendingChanges(event);
-    this.hideSelf();
-    this.setActiveValue(event, false);
-  }
+  // toggleCompletion(event) {
+  //   this.setPendingChanges(event);
+  //   this.hideSelf();
+  //   this.setActiveValue(event, false);
+  // }
 }

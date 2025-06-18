@@ -1,57 +1,34 @@
 <%= tag.div id: dom_id(task), class: "flex relative p-1 hover:bg-accent drag-handle", data: data_options do %>
-  <%= form_with(model: task, class: "flex flex-grow", data: { "task-component-target": "form" }) do |form| %>
-    <%= render CheckBoxComponent.new do |component| %>
+  <%= render CheckBoxComponent.new do |component| %>
+    <%= form_with(model: task) do |form| %>
       <% component.with_checkbox_peer do %>
         <%= form.checkbox :completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#toggleCompletion" } %>
       <% end %>
     <% end %>
-
-    <div class="flex flex-grow flex-col">
-      <%= render TaskAttributeComponent.new(task: task, attribute: :title) do |component| %>
-        <% component.with_display do %>
-          <%= task.title %>
-        <% end %>
-        <%= component.with_edit do %>
-          <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
-        <% end %>
-      <% end %>
-
-      <%= render TaskAttributeComponent.new(task: task, attribute: :description) do |component| %>
-        <% component.with_display do %>
-          <div class="text-xs opacity-75"><%= task.description %></div>
-        <% end %>
-        <% component.with_edit do %>
-          <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off", data: { "task-component-target": "attributeField" } %>
-        <% end %>
-      <% end %>
-
-      <%= render DatetimePickerComponent.new do |component| %>
-        <% component.with_datetime_badge do %>
-          <%= render TaskAttributeComponent.new(task: task, attribute: :due_at) do |component| %>
-            <% component.with_display do %>
-              <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
-                <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
-              </div>
-            <% end %>
-            <% component.with_edit do %>
-              <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
-                <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-        <% component.with_date_field do %>
-          <%= form.date_field :due_date, autocomplete: "off", class: "hidden" %>
-        <% end %>
-        <% component.with_time_field do %>
-          <%= form.text_field :due_time, autocomplete: "off", class: "w-full p-2 text-sm placeholder-neutral bg-transparent border-0 ring-0", placeholder: "Set time" %>
-        <% end %>
-      <% end %>
-    </div>
   <% end %>
 
+  <div class="flex flex-grow" data-task-component-target="display">
+    <div class="flex flex-col">
+      <%= render TaskAttributeComponent.new(task: task, attribute: :title) do %>
+        <%= task.title %>
+      <% end %>
+      <%= render TaskAttributeComponent.new(task: task, attribute: :description) do %>
+        <div class="text-xs opacity-75"><%= task.description %></div>
+      <% end %>
+      <%= render TaskAttributeComponent.new(task: task, attribute: :due_at) do %>
+        <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
+          <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="hidden" data-task-component-target="form">
+    <%= render TaskFormComponent.new(task: task) %>
+  </div>
+
   <% if task.persisted? %>
-    <div class="relative flex items-center" data-controller="dropdown">
+    <div class="relative flex items-center ml-auto" data-controller="dropdown">
       <span class="px-1 cursor-pointer rounded-lg hover:bg-rose-400" data-action="click->dropdown#toggle click@window->dropdown#hide">
         &#x22EE;
       </span>

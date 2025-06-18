@@ -1,4 +1,3 @@
-<div data-controller="task-attribute-component" data-task-attribute-component-task-value="<%= task.id %>" data-task-attribute="<%= attribute %>">
-  <div class="cursor-default" data-task-attribute-component-target="display"><%= display if render_display? %></div>
-  <div class="hidden" data-task-attribute-component-target="edit"><%= edit %></div>
+<div data-controller="task-attribute-component" data-task-id="<%= task.id %>" data-task-attribute="<%= attribute %>">
+  <div class="cursor-default"><%= content %></div>
 </div>
