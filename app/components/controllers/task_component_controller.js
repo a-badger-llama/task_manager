@@ -90,7 +90,7 @@ export default class extends Controller {
     Turbo.renderStreamMessage(this.pendingStream);
     this.pendingStream = null;
     this.dispatch("rendered", {
-      detail:     { task: this.taskValue },
+      detail:     { task: this.taskId },
       target:     this.element,
     });
   }
