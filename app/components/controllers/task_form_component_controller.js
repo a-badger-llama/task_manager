@@ -41,7 +41,6 @@ export default class extends Controller {
       due_at:      () => this.due_atTarget.click()
     };
 
-
     requestAnimationFrame(() => {
       (attributeActions[attribute] || attributeActions['title'])();
     })

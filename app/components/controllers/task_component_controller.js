@@ -28,10 +28,13 @@ export default class extends Controller {
   }
 
   dispatchClicked(event) {
+    const attributeEl = event.target.closest("[data-task-attribute]");
+    const attribute = attributeEl?.dataset.taskAttribute;
+
     this.dispatch("clicked", {
       detail: {
         task: this.taskId,
-        attribute: event.target.dataset.taskAttribute,
+        attribute: attribute
       }
     })
   }
