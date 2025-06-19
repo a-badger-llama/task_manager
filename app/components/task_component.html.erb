@@ -1,7 +1,7 @@
 <%= tag.div id: dom_id(task), class: "flex p-1 hover:bg-accent drag-handle", data: data_options do %>
   <%= render CheckBoxComponent.new do |component| %>
     <% component.with_checkbox_peer do %>
-      <%= check_box_tag "task[completed]", id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#toggleCompletion" } %>
+      <%= check_box_tag "task[completed]", task.completed, task.completed, id: dom_id(task, :completed), class: "sr-only peer", autocomplete: "off", data: { action: "change->task-component#completeTask" } %>
     <% end %>
   <% end %>
 

@@ -62,13 +62,11 @@ export default class extends Controller {
 
   deleteTask() {
     this.hideSelf();
-
-    fetch(this.formTarget.action, {
-      method:  "DELETE",
-      headers: this.generateHeaders(),
+    this.dispatch("deleted", {
+      detail: {
+        task: this.taskId,
+      }
     })
-    .then(this.handleResponse.bind(this))
-    .catch(error => console.error("Task deletion failed:", error));
   }
 
   hideSelf() {
@@ -97,7 +95,7 @@ export default class extends Controller {
     });
   }
 
-  toggleCompletion(event) {
+  completeTask(event) {
     this.hideSelf();
     this.dispatch("completed", {
       detail: {

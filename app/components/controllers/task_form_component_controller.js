@@ -112,4 +112,15 @@ export default class extends Controller {
     this.completedTarget.checked = !this.completedTarget.checked;
     this.submitForm();
   }
+
+  delete(event) {
+    if (this.taskId !== event.detail.task) return;
+
+    fetch(this.element.action, {
+      method:  "DELETE",
+      headers: this.generateHeaders(),
+    })
+    .then(this.handleResponse.bind(this))
+    .catch(error => console.error("Task deletion failed:", error));
+  }
 }

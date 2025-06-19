@@ -10,6 +10,7 @@ class TaskFormComponent < ViewComponent::Base
       action:     [
                     "change->task-form-component#setPendingChanges",
                     "task-component:completed@window->task-form-component#complete",
+                    "task-component:deleted@window->task-form-component#delete",
                     "task-component:clicked@window->task-form-component#setFocus",
                     "task-component:save@window->task-form-component#safeSubmit"
                   ].join(" "),
