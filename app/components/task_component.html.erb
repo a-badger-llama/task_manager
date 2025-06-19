@@ -7,23 +7,15 @@
     <% end %>
   <% end %>
 
-  <div class="flex flex-grow" data-task-component-target="display">
-    <div class="flex flex-col">
-      <%= render TaskAttributeComponent.new(task: task, attribute: :title) do %>
-        <%= task.title %>
-      <% end %>
-      <%= render TaskAttributeComponent.new(task: task, attribute: :description) do %>
-        <div class="text-xs opacity-75"><%= task.description %></div>
-      <% end %>
-      <%= render TaskAttributeComponent.new(task: task, attribute: :due_at) do %>
-        <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center">
-          <%= formatted_due_at || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
-        </div>
-      <% end %>
+  <div class="flex flex-grow flex-col cursor-default" data-task-component-target="display" data-action="click->task-component#dispatchClicked">
+    <div data-task-attribute="title"><%= task.title %></div>
+    <div class="text-xs opacity-75" data-task-attribute="description"><%= task.description %></div>
+    <div class="text-xs w-fit mt-1 px-2 cursor-pointer rounded-full border-1 hover:bg-primary flex items-center justify-center" data-task-attribute="due_at">
+      <%= helpers.formatted_due_at(task) || helpers.inline_svg("calendar-circle-plus-svgrepo-com.svg", class: "h-4 w-4", aria: { label: "Open date and time picker" }) %>
     </div>
   </div>
 
-  <div class="hidden" data-task-component-target="form">
+  <div class="hidden flex flex-grow flex-col" data-task-component-target="form">
     <%= render TaskFormComponent.new(task: task) %>
   </div>
 

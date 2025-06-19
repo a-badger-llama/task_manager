@@ -1,43 +1,39 @@
 import {Controller} from "@hotwired/stimulus";
 import {Turbo}      from "@hotwired/turbo-rails";
 
-const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
-
 export default class extends Controller {
   static targets = ["attributeField", "display", "form"]
   static values = {
-    task: { type: Number, default: 0 },
-    active: { type: Boolean, default: false }
+    active: { type: Boolean, default: false },
+    pendingStream: { type: String, default: null }
   }
 
   connect() {
-    this.taskValue = this.element.dataset.taskId;
-    this.pendingChanges = false;
-    this.pendingStream = null;
-    this.boundSetPendingChanges = this.setPendingChanges.bind(this);
+    this.taskId = this.element.dataset.taskId;
     this.boundSetActiveValue = this.setActiveValue.bind(this);
 
-    document.addEventListener("change", this.boundSetPendingChanges);
     document.addEventListener("click", this.boundSetActiveValue);
   }
 
   disconnect() {
-    document.removeEventListener("change", this.boundSetPendingChanges);
     document.removeEventListener("click", this.boundSetActiveValue);
   }
 
-  setPendingChanges(event) {
-    if (!this.element.contains(event.target)) return;
-
-    this.pendingChanges = true;
+  setActiveValue(event) {
+    if (!this.activeValue && this.element.contains(event.target)) {
+      this.activeValue = true;
+    } else if (this.activeValue && !this.element.contains(event.target)) {
+      this.activeValue = false;
+    }
   }
 
-  setActiveValue(event, value) {
-    if (value !== undefined && value !== null) {
-      this.activeValue = value;
-    } else {
-      this.activeValue = this.element.contains(event.target);
-    }
+  dispatchClicked(event) {
+    this.dispatch("clicked", {
+      detail: {
+        task: this.taskId,
+        attribute: event.target.dataset.taskAttribute,
+      }
+    })
   }
 
   activeValueChanged() {
@@ -51,29 +47,14 @@ export default class extends Controller {
       this.element.classList.add("drag-handle");
       this.displayTarget.classList.remove("hidden")
       this.formTarget.classList.add("hidden")
-      // this.safeSubmit();
+      this.dispatch("save", {
+        detail: {
+          task: this.taskId,
+          dom_id: this.element.id
+        }
+      })
+      this.renderSafely();
     }
-  }
-
-  safeSubmit() {
-    if (!this.pendingChanges || this.isEmpty() || this.activeValue) return;
-
-    this.submitForm();
-    this.pendingChanges = false;
-  }
-
-  submitForm() {
-    const formElement = this.formTarget;
-    const formData = new FormData(formElement);
-
-    formData.append("dom_id", this.element.id);
-    fetch(formElement.action, {
-      method:  formElement.method,
-      headers: this.generateHeaders(),
-      body:    formData,
-    })
-    .then(this.handleResponse.bind(this))
-    .catch(error => console.error("Form submission failed:", error));
   }
 
   deleteTask() {
@@ -87,41 +68,25 @@ export default class extends Controller {
     .catch(error => console.error("Task deletion failed:", error));
   }
 
-  generateHeaders(contentType = "text/vnd.turbo-stream.html") {
-    const csrfToken = document.querySelector(CSRF_TOKEN_SELECTOR)?.content || "";
-
-    return {"X-CSRF-Token": csrfToken, Accept: contentType};
+  hideSelf() {
+    this.element.classList.add("hidden");
   }
 
-  async handleResponse(response) {
-    const contentType = response.headers.get("Content-Type") || "";
+  setPendingStream(event) {
+    this.pendingStream = event.detail.turboStream;
 
-    if (response.ok && contentType.includes("turbo-stream")) {
-      this.pendingStream = await response.text();
-      this.renderSafely();
-    } else {
-      console.warn("Received a non-turbo-stream response");
-    }
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    this.renderSafely();
   }
 
   renderSafely() {
-    if (this.pendingStream && !this.activeValue) {
-      Turbo.renderStreamMessage(this.pendingStream);
-      this.pendingStream = null;
-      this.dispatch("rendered", {
-        detail:     { task: this.taskValue },
-        target:     this.element,
-      });
-    }
-  }
+    if (this.activeValue || !this.pendingStream) return;
 
-  isEmpty() {
-    return this.attributeFieldTargets.every(input => input.value === "" || input.value === null);
-  }
-
-  hideSelf() {
-    this.element.classList.add("hidden");
+    Turbo.renderStreamMessage(this.pendingStream);
+    this.pendingStream = null;
+    this.dispatch("rendered", {
+      detail:     { task: this.taskValue },
+      target:     this.element,
+    });
   }
 
   // toggleCompletion(event) {
