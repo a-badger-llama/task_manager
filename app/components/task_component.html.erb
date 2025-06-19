@@ -1,4 +1,4 @@
-<%= tag.div id: dom_id(task), class: "flex relative p-1 hover:bg-accent drag-handle", data: data_options do %>
+<%= tag.div id: dom_id(task), class: "flex p-1 hover:bg-accent drag-handle", data: data_options do %>
   <%= render CheckBoxComponent.new do |component| %>
     <%= form_with(model: task) do |form| %>
       <% component.with_checkbox_peer do %>
