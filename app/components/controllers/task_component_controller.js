@@ -73,6 +73,11 @@ export default class extends Controller {
 
   hideSelf() {
     this.element.classList.add("hidden");
+
+    if (this.activeValue) {
+      this.activeValue = false;
+      document.activeElement.blur();
+    }
   }
 
   setPendingStream(event) {
@@ -92,9 +97,12 @@ export default class extends Controller {
     });
   }
 
-  // toggleCompletion(event) {
-  //   this.setPendingChanges(event);
-  //   this.hideSelf();
-  //   this.setActiveValue(event, false);
-  // }
+  toggleCompletion(event) {
+    this.hideSelf();
+    this.dispatch("completed", {
+      detail: {
+        task: this.taskId,
+      }
+    })
+  }
 }

@@ -8,7 +8,7 @@ class TaskComponent < ViewComponent::Base
     @data_options = {
       action: "task-form-component:renderStream->task-component#setPendingStream",
       controller: "task-component",
-      task_id: task.id,
+      task_id: task.id
     }.merge(data_options)
   end
 end

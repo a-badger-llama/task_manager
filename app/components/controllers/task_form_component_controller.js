@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 const CSRF_TOKEN_SELECTOR = "[name='csrf-token']";
 
 export default class extends Controller {
-  static targets = ["title", "description", "due_at"]
+  static targets = ["title", "description", "due_at", "completed"]
   static values = {
     pendingChanges: { type: Boolean, default: false }
   }
@@ -104,5 +104,12 @@ export default class extends Controller {
       console.warn("Received a non-turbo-stream response");
     }
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  complete(event) {
+    if (this.taskId !== event.detail.task) return;
+
+    this.completedTarget.checked = !this.completedTarget.checked;
+    this.submitForm();
   }
 }

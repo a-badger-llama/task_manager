@@ -1,5 +1,8 @@
-<%= form_with(model: task, class: "flex flex-grow flex-col", data: { action: "change->task-form-component#setPendingChanges task-component:clicked@window->task-form-component#setFocus task-component:save@window->task-form-component#safeSubmit", controller: "task-form-component", task_id: task.id }) do |form| %>
+<%= form_with(model: task, class: "flex flex-grow flex-col", data: data_options) do |form| %>
   <%= hidden_field_tag :dom_id, dom_id(task) %>
+
+  <%= form.checkbox :completed, id: dom_id(task, :completed), class: "hidden", data: { task_form_component_target: "completed" }, autocomplete: "off" %>
+
   <%= form.text_field :title, id: dom_id(task, :title), class: "w-full bg-transparent border-none ring-0 p-0", placeholder: "Title", autocomplete: "off", data: { task_form_component_target: "title" } %>
   <%= form.text_area :description, id: dom_id(task, :description), class: "w-full text-xs opacity-75 bg-transparent border-none ring-0 p-0 resize-none", rows: 1, placeholder: "Description", autocomplete: "off", data: { task_form_component_target: "description", action: "input->task-form-component#autoResize" } %>
 
