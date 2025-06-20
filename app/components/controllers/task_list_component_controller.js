@@ -86,7 +86,7 @@ export default class extends Controller {
     const taskTemplate = this.taskTemplateTarget;
     const clone = taskTemplate.content.cloneNode(true);
     const newTask = clone.firstElementChild;
-    newTask.id = `${newTask.id}_${Date.now()}`;
+    // newTask.id = `${newTask.id}_${Date.now()}`;
     return newTask;
   }
 }
