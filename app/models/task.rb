@@ -7,7 +7,6 @@ class Task < ApplicationRecord
   scope :incomplete, -> { where(completed_at: nil) }
   scope :complete, -> { where.not(completed_at: nil) }
   scope :position, -> { order(position: :asc) }
-  scope :default_sort, -> { position.order(created_at: :desc) }
 
   def completed
     completed_at.present?
@@ -38,11 +37,13 @@ class Task < ApplicationRecord
   end
 
   def due_time
+    return unless has_due_time || @due_time.present?
+
     @due_time || due_at&.strftime("%l:%M %p")
   end
 
   def due_time=(value)
-    @due_time = value.is_a?(String) ? Time.zone.parse(value)&.strftime("%H:%M") : value&.strftime("%H:%M")
+    @due_time = value.is_a?(String) ? Time.zone.parse(value)&.strftime("%l:%M %p") : value&.strftime("%l:%M %p")
   end
 
   def due_at=(value)
