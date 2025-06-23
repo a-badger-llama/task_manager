@@ -6,7 +6,7 @@ class TaskTest < ActiveSupport::TestCase
   def setup
     freeze_time
 
-    @user = users(:jonathan)
+    @user     = users(:jonathan)
     @new_task = Task.new(
       title:       "Test Task",
       description: "Test Description",
@@ -58,6 +58,25 @@ class TaskTest < ActiveSupport::TestCase
     tasks.each_cons(2) do |previous_task, current_task|
       assert current_task.position > previous_task.position, "Task positions should be in ascending order"
     end
+  end
+
+  def test_search_scope
+    tasks = Task.search("search test")
+
+    expected = [
+      { title: "Search Test", description: "This is a description for a task search test", rank: 1.3 },
+      { title: "Search Test Task", description: "Regular task description", rank: 0.7777778 },
+      { title: "SeArCh TeSt Example", description: "Regular description", rank: 0.6 },
+      { title: "Regular Task", description: "This is a search test example", rank: 0.4702381 }
+    ]
+    actual   = tasks.map { |task| {
+      title:       task.title,
+      description: task.description,
+      rank:        task.rank
+    } }
+
+    assert_equal 4, tasks.count(:all)
+    assert_equal expected, actual
   end
 
   def test_set_completed

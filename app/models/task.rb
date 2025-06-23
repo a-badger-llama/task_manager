@@ -7,6 +7,14 @@ class Task < ApplicationRecord
   scope :incomplete, -> { where(completed_at: nil) }
   scope :complete, -> { where.not(completed_at: nil) }
   scope :position, -> { order(position: :asc) }
+  scope :search, -> (query) {
+    sanitized_query = sanitize_sql_like(query)
+
+    select(%Q(#{table_name}.*,
+      (COALESCE(similarity(title, '#{sanitized_query}'), 0) + COALESCE(similarity(description, '#{sanitized_query}'), 0)) AS rank)
+    ).where("title ILIKE :query OR description ILIKE :query", query: "%#{query}%")
+     .order("rank DESC")
+  }
 
   def completed
     completed_at.present?
@@ -59,6 +67,6 @@ class Task < ApplicationRecord
     return if due_date.blank?
 
     self.has_due_time = due_time.present?
-    self.due_at = Time.zone.parse("#{due_date} #{due_time.presence}")
+    self.due_at       = Time.zone.parse("#{due_date} #{due_time.presence}")
   end
 end
