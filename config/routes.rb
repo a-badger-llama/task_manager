@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   root to: redirect("/users/sign_in")
 
-  resources :tasks do
+  resources :tasks, except: [:new, :show, :edit] do
     collection do
       post "reorder"
     end

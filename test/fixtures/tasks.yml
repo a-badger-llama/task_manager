@@ -11,24 +11,29 @@ task_minimal:
   user: jonathan
   title: Minimal Task
   description: Only title and description
+  position: 0
 
 task_no_description:
   user: jonathan
   title: No Description Task
   due_at: <%= 2.days.from_now %>
+  position: 1
 
 task_only_title:
   user: jonathan
   title: Just a Title
+  position: 2
 
 task_future:
   user: jonathan
   title: Future Task
   description: This task is due in the future
   due_at: <%= 1.week.from_now %>
+  position: 3
 
 task_with_time:
   user: jonathan
   title: Task with due time
   description: Task with due date and due time
   due_at: <%=  Time.zone.at(2.days.from_now) %>
+  position: 4
