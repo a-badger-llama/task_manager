@@ -148,7 +148,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference("Task.count") do
       assert_raises ActiveRecord::RecordNotDestroyed do
-        delete task_path(task), as: :turbo_stream
+        delete task_url(task), as: :turbo_stream
       end
     end
   end

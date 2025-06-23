@@ -88,7 +88,7 @@ class TaskTest < ActiveSupport::TestCase
 
     task.has_due_time = true
 
-    assert task.due_at.strftime("%l:%M %p"), task.due_time
+    assert_equal task.due_at.strftime("%l:%M %p"), task.due_time
   end
 
   def test_due_time_setter_with_datetime
@@ -98,7 +98,7 @@ class TaskTest < ActiveSupport::TestCase
 
     task.due_time = 2.days.from_now
 
-    assert 2.days.from_now.strftime("%l:%M %p"), task.due_time
+    assert_equal 2.days.from_now.strftime("%l:%M %p"), task.due_time
   end
 
   def test_due_time_setter_with_string
@@ -106,9 +106,9 @@ class TaskTest < ActiveSupport::TestCase
 
     refute task.due_time.present?
 
-    task.due_time = 2.days.from_now.strftime("H:M")
+    task.due_time = 2.days.from_now.strftime("%H:%M")
 
-    assert 2.days.from_now.strftime("%l:%M %p"), task.due_time
+    assert_equal 2.days.from_now.strftime("%l:%M %p"), task.due_time
   end
 
   def test_due_time_with_invalid_time
