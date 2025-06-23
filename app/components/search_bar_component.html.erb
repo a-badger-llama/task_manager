@@ -1,0 +1,8 @@
+<div data-controller="search-bar-component">
+  <%= form_with(url: search_url, method: :get, data: { search_bar_component_target: "form", replace_id: "tasks" }) do |form| %>
+    <%= form.text_field :query, class: "w-full bg-transparent border-none ring-0 p-0", data: { action: "keyup->search-bar-component#search" }, placeholder: placeholder, autocomplete: "off" %>
+  <% end %>
+
+  <div data-search-bar-component-target="results">
+  </div>
+</div>

@@ -2,8 +2,16 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:update, :destroy]
 
   def index
-    @tasks           = Task.incomplete.position.order(created_at: :desc)
-    @completed_tasks = Task.complete.position.order(created_at: :desc)
+    all_tasks = Task.where(user: current_user).position.order(created_at: :desc)
+    all_tasks = all_tasks.search(params[:query]) if params[:query].present?
+
+    @tasks           = all_tasks.incomplete
+    @completed_tasks = all_tasks.complete
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   # def show

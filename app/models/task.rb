@@ -7,7 +7,7 @@ class Task < ApplicationRecord
   scope :incomplete, -> { where(completed_at: nil) }
   scope :complete, -> { where.not(completed_at: nil) }
   scope :position, -> { order(position: :asc) }
-  scope :search, -> (query) {
+  scope :search, ->(query) {
     sanitized_query = sanitize_sql_like(query)
 
     select(%Q(#{table_name}.*,

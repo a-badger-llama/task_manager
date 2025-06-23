@@ -1,0 +1,19 @@
+<%= turbo_stream.replace "tasks", method: :morph do %>
+  <div id="tasks" class="flex flex-col" data-task-list-component-target="taskList">
+    <% @tasks.each do |task| %>
+      <%= render TaskComponent.new(task: task) %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "completed-count", method: :morph do %>
+  <span id="completed-count"><%= @completed_tasks.size %></span>
+<% end %>
+
+<%= turbo_stream.replace "completed-tasks", method: :morph do %>
+  <div id="completed-tasks" class="flex flex-col" data-task-list-component-target="taskList">
+    <% @completed_tasks.each do |task| %>
+      <%= render TaskComponent.new(task: task) %>
+    <% end %>
+  </div>
+<% end %>
