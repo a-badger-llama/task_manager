@@ -8,12 +8,14 @@ class Task < ApplicationRecord
   scope :complete, -> { where.not(completed_at: nil) }
   scope :position, -> { order(position: :asc) }
   scope :search, ->(query) {
-    sanitized_query = sanitize_sql_like(query)
+    sanitized_select_clause = sanitize_sql_array([
+      "tasks.*, (COALESCE(similarity(title, :query), 0) + COALESCE(similarity(description, :query), 0)) AS rank",
+      query: query
+    ])
 
-    select(%Q(#{table_name}.*,
-      (COALESCE(similarity(title, '#{sanitized_query}'), 0) + COALESCE(similarity(description, '#{sanitized_query}'), 0)) AS rank)
-    ).where("title ILIKE :query OR description ILIKE :query", query: "%#{query}%")
-     .order("rank DESC")
+    select(sanitized_select_clause)
+      .where("title ILIKE :query OR description ILIKE :query", query: "%#{query}%")
+      .order("rank DESC")
   }
 
   def completed

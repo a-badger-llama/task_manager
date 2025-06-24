@@ -37,7 +37,7 @@ class TaskTest < ActiveSupport::TestCase
   def test_incomplete_scope
     incomplete_tasks = Task.incomplete
 
-    assert_equal 5, Task.incomplete.count
+    assert_equal 10, Task.incomplete.count
     incomplete_tasks.each do |task|
       assert_equal false, task.completed?
     end
