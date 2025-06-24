@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_01_025013) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_192125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "solid_cache_entries", force: :cascade do |t|
     t.binary "key", null: false

@@ -3,6 +3,10 @@
     <div class="flex items-center justify-between">
       <h1 class="text-lg">Task List</h1>
     </div>
+
+    <div class="text-xs bg-accent border-b-2 border-secondary p-2">
+      <%= render SearchBarComponent.new(search_url: tasks_path, placeholder: "Search tasks") %>
+    </div>
   </div>
 
   <%= render TaskListComponent.new(tasks: @tasks, dom_id: "tasks") do |component| %>

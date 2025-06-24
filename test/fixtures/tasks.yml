@@ -37,3 +37,33 @@ task_with_time:
   description: Task with due date and due time
   due_at: <%=  Time.zone.at(2.days.from_now) %>
   position: 4
+
+task_search_title:
+  user: jonathan
+  title: Search Test Task
+  description: Regular task description
+  position: 5
+
+task_search_description:
+  user: jonathan
+  title: Regular Task
+  description: This is a search test example
+  position: 6
+
+task_search_both:
+  user: jonathan
+  title: Search Test
+  description: This is a description for a task search test
+  position: 7
+
+task_search_partial:
+  user: jonathan
+  title: Regular Task
+  description: Searching for something
+  position: 8
+
+task_search_mixed_case:
+  user: jonathan
+  title: SeArCh TeSt Example
+  description: Regular description
+  position: 9

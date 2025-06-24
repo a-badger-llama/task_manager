@@ -18,6 +18,20 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index with search" do
+    get tasks_url, params: { search: "search test" }
+
+    assert_response :success
+    assert_includes response.body, "search test"
+  end
+
+  test "index as turbo stream" do
+    get tasks_url, as: :turbo_stream, params: { search: "search test" }
+
+    assert_response :success
+    assert_includes response.body, "search test"
+  end
+
   test "new is not a route" do
     get tasks_url + "/new"
 
