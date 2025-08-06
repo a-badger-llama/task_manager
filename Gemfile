@@ -68,4 +68,4 @@ gem "devise", "~> 4.9"
 
 gem "tailwindcss-rails", "~> 4.2"
 
-gem "view_component", "~> 3.23"
+gem "view_component", "~> 4.0"
